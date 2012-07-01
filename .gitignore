@@ -1,0 +1,17 @@
+.DS_Store
+
+*.py[cod]
+__pycache__
+
+*.egg-info
+
+build
+dist
+sdist
+
+pip-log.txt
+
+*~
+*.swp
+
+.sass-cache

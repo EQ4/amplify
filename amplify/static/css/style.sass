@@ -1,0 +1,58 @@
+@mixin shadow
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.6)
+
+@mixin transition($property, $duration, $easing)
+  -webkit-transition: $property $duration $easing
+
+html
+  @include shadow
+  background: #222 url('../img/background.png')
+  color: #FFF
+  font-family: "Comfortaa", "Arial", sans-serif
+
+body
+  text-align: center
+
+h1, h2
+  margin: 0.25em
+
+h2
+  color: #666
+
+.album
+  cursor: pointer
+  display: inline-block
+  height: 302px
+  margin: 100px 0px 50px
+  opacity: 0
+  position: relative
+  width: 302px
+
+  .cover
+    @include transition(box-shadow, 0.2s, linear)
+    border-radius: 5px
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3)
+    height: 302px
+    width: 302px
+
+    &:hover
+      @include transition(box-shadow, 0.2s, linear)
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5)
+
+  .cover, .vinyl
+    left: 0
+    position: absolute
+    top: 0
+
+  .progressBar
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#66b415), to(#90d130))
+    border-radius: 3px
+    border-top: 1px solid #90d130
+    bottom: 0
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25)
+    height: 6px
+    margin: 0 0 -15px 0
+    position: absolute
+    width: 0%
+
+// vim: set sts=2 ts=2 sw=2
