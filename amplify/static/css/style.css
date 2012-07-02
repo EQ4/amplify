@@ -27,12 +27,12 @@ h2 {
   .album .cover {
     -webkit-transition: box-shadow 0.2s linear;
     border-radius: 5px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     height: 302px;
     width: 302px; }
     .album .cover:hover {
       -webkit-transition: box-shadow 0.2s linear;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); }
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5); }
   .album .cover, .album .vinyl {
     left: 0;
     position: absolute;
