@@ -95,6 +95,7 @@ def main():
 
     parser.add_argument('-b', '--bind', default='localhost')
     parser.add_argument('-p', '--port', default=8000, type=int)
+    parser.add_argument('-c', '--cover', help='Image to use as album cover')
     parser.add_argument('path', help='Path to music file or album directory')
 
     options = parser.parse_args()
@@ -150,6 +151,8 @@ def main():
 
     if cover:
         app.cover = cover
+    elif options.cover:
+        app.cover = open(options.cover, 'rb')
 
     try:
         print('Listening on http://{0}:{1}/ ...'.format(
