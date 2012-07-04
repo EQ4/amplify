@@ -2,6 +2,7 @@ import mimetypes
 import os
 import re
 import shutil
+import socket
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
@@ -41,8 +42,8 @@ class RequestHandler(BaseHTTPRequestHandler):
     static_url_prefix = '/static/'
     static_dir = 'static'
 
-    # def log_message(self, *args, **kwargs):
-    #     pass
+    def log_message(self, *args, **kwargs):
+        pass
 
     def sanitize_static_path(self, path):
         sanitized_path = ''
@@ -160,4 +161,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Length', response.content_length)
             self.end_headers()
 
-            self.wfile.write(response.content)
+            try:
+                self.wfile.write(response.content)
+            except socket.error:
+                pass
