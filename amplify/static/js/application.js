@@ -4,6 +4,7 @@ var AudioPlayer = Backbone.Model.extend({
         playlist: [],
         playlistPosition: 0,
         current: {},
+        playing: false,
     },
 
     initialize: function() {
@@ -24,16 +25,17 @@ var AudioPlayer = Backbone.Model.extend({
     },
 
     isPaused: function() {
-        return this.get('audio').paused;
+        return !this.get('playing');
     },
 
     play: function() {
-        var audio = this.get('audio');
-        audio.play();
+        this.get('audio').play();
+        this.set({playing: true});
     },
 
     pause: function() {
         this.get('audio').pause();
+        this.set({playing: false});
     }
 });
 
@@ -43,6 +45,7 @@ var ApplicationView = Backbone.View.extend({
     initialize: function() {
         var audioplayer = new AudioPlayer();
 
+        // Song changed
         audioplayer.on('change:current', function() {
             var current = this.get('current');
 
@@ -52,6 +55,20 @@ var ApplicationView = Backbone.View.extend({
 
         }, audioplayer);
 
+        // Play/Pause
+        audioplayer.on('change:playing', function() {
+            var vinyl = $('.vinyl');
+
+            if (this.get('playing')) {
+                if (!vinyl.hasClass('visible')) {
+                  vinyl.addClass('visible');
+                }
+            } else {
+                vinyl.removeClass('visible');
+            }
+        }, audioplayer);
+
+        // Animate the cover when fully loaded
         $('h1, h2').css({opacity: 0});
         $('.cover').load(function() {
             $('.album').css({
@@ -77,26 +94,8 @@ var ApplicationView = Backbone.View.extend({
         $('.album').click(function() {
             if (audioplayer.isPaused()) {
                 audioplayer.play();
-
-                $('.vinyl')
-                .css({
-                    rotate: '-90deg'
-                })
-                .transition({
-                    marginTop: '-50px',
-                    rotate: '0deg'
-                }, 500);
             } else {
                 audioplayer.pause();
-
-                $('.vinyl')
-                .transition({
-                    marginTop: '0',
-                    rotate: '-90deg'
-                }, 500)
-                .css({
-                    rotate: '0deg'
-                });
             }
         });
     }

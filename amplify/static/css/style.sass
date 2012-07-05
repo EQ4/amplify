@@ -7,7 +7,16 @@
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.6)
 
 @mixin transition($property, $duration, $easing)
+  -moz-transition: $property $duration $easing
+  -o-transition: $property $duration $easing
   -webkit-transition: $property $duration $easing
+  transition: $property $duration $easing
+
+@mixin rotate($value)
+  -moz-transform: rotate($value)
+  -o-transform: rotate($value)
+  -webkit-transform: rotate($value)
+  transform: rotate($value)
 
 html
   @include shadow
@@ -51,5 +60,14 @@ h2
     left: 0
     position: absolute
     top: 0
+
+.vinyl
+  @include rotate(-90deg)
+  -webkit-transition: margin-top 0.5s, -webkit-transform 0.5s
+
+.vinyl.visible
+  @include rotate(0deg)
+  -webkit-transition: margin-top 0.5s, -webkit-transform 0.5s
+  margin-top: -50px
 
 // vim: set sts=2 ts=2 sw=2

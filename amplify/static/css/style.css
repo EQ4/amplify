@@ -30,15 +30,36 @@ h2 {
   position: relative;
   width: 302px; }
   .album .cover {
+    -moz-transition: box-shadow 0.2s linear;
+    -o-transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
+    transition: box-shadow 0.2s linear;
     border-radius: 5px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     height: 302px;
     width: 302px; }
     .album .cover:hover {
+      -moz-transition: box-shadow 0.2s linear;
+      -o-transition: box-shadow 0.2s linear;
       -webkit-transition: box-shadow 0.2s linear;
+      transition: box-shadow 0.2s linear;
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.5); }
   .album .cover, .album .vinyl {
     left: 0;
     position: absolute;
     top: 0; }
+
+.vinyl {
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-transition: margin-top 0.5s, -webkit-transform 0.5s; }
+
+.vinyl.visible {
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: margin-top 0.5s, -webkit-transform 0.5s;
+  margin-top: -50px; }
