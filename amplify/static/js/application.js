@@ -1,21 +1,28 @@
 var AudioPlayer = Backbone.Model.extend({
     defaults: {
         audio: new Audio(),
+        current: {},
         playlist: [],
         playlistPosition: 0,
-        current: {},
         playing: false,
+        repeat: false,
     },
 
     initialize: function() {
-        this.on('change:current', function() {
-            var audio = this.get('audio');
-            var position = this.get('playlistPosition');
-            var track = this.get('playlist')[position];
+        var audio = this.get('audio');
 
+        // Advance in the playlist when a song has ended.
+        $(audio).bind('ended', _.bind(function() {
+            this.next();
+        }, this));
+
+        // Update the audio source when the playlist has advanced.
+        this.on('change:current', function() {
+            var track = this.get('current')
             audio.src = '/song/' + track.id;
         }, this);
 
+        // Fetch the playlist.
         jQuery.getJSON('/songs', _.bind(function(data) {
             this.set({
                 current: data[0],
@@ -36,6 +43,34 @@ var AudioPlayer = Backbone.Model.extend({
     pause: function() {
         this.get('audio').pause();
         this.set({playing: false});
+    },
+
+    next: function() {
+        var audio = this.get('audio'),
+            playlist = this.get('playlist'),
+            position = this.get('playlistPosition');
+
+        position++;
+
+        if (position < playlist.length) {
+            audio.src = '/song/' + position;
+            this.play();
+        } else {
+            position = 0;
+
+            if (this.get('repeat')) {
+                audio.src = '/song/' + position;
+                this.play();
+            } else {
+                this.pause();
+            }
+        }
+
+        this.set({
+            audio: audio,
+            current: playlist[position],
+            playlistPosition: position
+        });
     }
 });
 
