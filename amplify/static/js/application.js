@@ -106,23 +106,16 @@ var ApplicationView = Backbone.View.extend({
         // Animate the cover when fully loaded
         $('h1, h2').css({opacity: 0});
         $('.cover').load(function() {
-            $('.album').css({
-                opacity: 1,
-                perspective: '604px',
-                rotateY: '90deg',
-            });
-
             setTimeout(function() {
-                $('.album').transition({
-                    rotateY: '0deg'
-                }, 1000, 'ease');
+                $('.album').removeClass('hidden');
 
                 setTimeout(function() {
                     $('h1, h2').transition({
+                        delay: 750,
                         opacity: 1
                     }, 1000, 'ease');
-                }, 1000);
-            }, 250);
+                });
+            }, 500);
         });
         $('.cover').attr('src', '/cover');
 
