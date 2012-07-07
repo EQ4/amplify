@@ -31,7 +31,8 @@ def songs(request):
         song = {
             'id': index,
             'title': str(tag.title),
-            'artist': str(tag.artist)
+            'artist': str(tag.artist),
+            'url': '/song/{0}'.format(index),
         }
 
         songs.append(song)

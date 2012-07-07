@@ -1,15 +1,54 @@
+var Song = Backbone.Model.extend({
+});
+
+var Playlist = Backbone.Collection.extend({
+    initialize: function() {
+        this.position = 0;
+    },
+    model: Song,
+    url: '/songs',
+
+    getNextTrack: function() {
+        var result = false;
+
+        this.position += 1;
+
+        if (this.position < this.models.length) {
+            return this.at(this.position);
+        } else {
+            this.position = 0;
+
+            if (this.get('repeat')) {
+                result = this.at(this.position);
+            }
+        }
+
+        return result;
+    },
+
+    getPreviousTrack: function() {
+    },
+});
+
 var AudioPlayer = Backbone.Model.extend({
     defaults: {
         audio: new Audio(),
         current: {},
-        playlist: [],
-        playlistPosition: 0,
+        playlist: new Playlist(),
         playing: false,
         repeat: false,
     },
 
     initialize: function() {
         var audio = this.get('audio');
+        var playlist = this.get('playlist');
+
+        playlist.fetch({
+            success: _.bind(function(collection, response) {
+                var track = collection.first();
+                this.set({current: track});
+            }, this)
+        });
 
         // Advance in the playlist when a song has ended.
         $(audio).bind('ended', _.bind(function() {
@@ -18,17 +57,9 @@ var AudioPlayer = Backbone.Model.extend({
 
         // Update the audio source when the playlist has advanced.
         this.on('change:current', function() {
-            var track = this.get('current')
-            audio.src = '/song/' + track.id;
+            var track = this.get('current');
+            audio.src = track.get('url');
         }, this);
-
-        // Fetch the playlist.
-        jQuery.getJSON('/songs', _.bind(function(data) {
-            this.set({
-                current: data[0],
-                playlist: data
-            });
-        }, this));
     },
 
     isPaused: function() {
@@ -46,31 +77,17 @@ var AudioPlayer = Backbone.Model.extend({
     },
 
     next: function() {
-        var audio = this.get('audio'),
-            playlist = this.get('playlist'),
-            position = this.get('playlistPosition');
+        var audio = this.get('audio');
+        var playlist = this.get('playlist');
+        var track = playlist.getNextTrack();
 
-        position++;
-
-        if (position < playlist.length) {
-            audio.src = '/song/' + position;
+        if (track) {
+            this.set({current: track});
             this.play();
         } else {
-            position = 0;
-
-            if (this.get('repeat')) {
-                audio.src = '/song/' + position;
-                this.play();
-            } else {
-                this.pause();
-            }
+            this.set({current: playlist.first()});
+            this.pause();
         }
-
-        this.set({
-            audio: audio,
-            current: playlist[position],
-            playlistPosition: position
-        });
     }
 });
 
@@ -82,11 +99,13 @@ var ApplicationView = Backbone.View.extend({
 
         // Song changed
         audioplayer.on('change:current', function() {
-            var current = this.get('current');
+            var track = this.get('current');
+            var title = track.get('title');
+            var artist = track.get('artist');
 
-            $('h1').text(current.title);
-            $('h2').text(current.artist);
-            $('head title').text(current.artist + ' - ' + current.title);
+            $('h1').text(title);
+            $('h2').text(artist);
+            $('head title').text(artist + ' - ' + title);
 
         }, audioplayer);
 
