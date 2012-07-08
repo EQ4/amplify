@@ -1,3 +1,21 @@
+function zeropad(value) {
+    var result = value.toString();
+
+    if (value < 10) {
+        result = '0' + result;
+    }
+
+    return result;
+}
+
+function secondsToTime(seconds) {
+    return {
+        hours: Math.floor(seconds / 60 / 60),
+        minutes: Math.floor(seconds / 60 % 60),
+        seconds: Math.floor(seconds % 60)
+    };
+}
+
 var Song = Backbone.Model.extend({
 });
 
@@ -49,6 +67,10 @@ var AudioPlayer = Backbone.Model.extend({
                 this.set({current: track});
             }, this)
         });
+
+        $(audio).bind('timeupdate', _.bind(function() {
+            this.trigger('timeupdate');
+        }, this));
 
         // Advance in the playlist when a song has ended.
         $(audio).bind('ended', _.bind(function() {
@@ -137,6 +159,14 @@ var ApplicationView = Backbone.View.extend({
             }, 500);
         });
         $('.cover').attr('src', '/cover');
+
+        audioplayer.on('timeupdate', function() {
+            var elapsed = secondsToTime(this.get('audio').currentTime);
+            var time = elapsed.minutes + ':' + zeropad(elapsed.seconds);
+            var track = this.get('current');
+
+            $('head title').text(time + ' | ' + track.get('artist') + ' - ' + track.get('title'));
+        });
 
         $('.album').click(function() {
             if (audioplayer.isPaused()) {
