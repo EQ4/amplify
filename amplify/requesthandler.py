@@ -89,37 +89,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 content_type = 'application/octet-stream'
 
             content_length = os.stat(full_path).st_size
-            content_start = 0
 
-            # Respect the Range-header.
-            range_requested = self.headers['range']
-            if range_requested:
-                # Partial Content
-                self.send_response(206)
-
-                range_start, _range_end = parse_range(range_requested)
-                content_start = range_start
-
-                self.send_header(
-                    'Content-Range', 'bytes {0}-{1}/{2}'.format(
-                        range_start,
-                        content_length - 1,
-                        content_length
-                    )
-                )
-
-                self.send_header('Content-Length', content_length - range_start)
-
-            else:
-                self.send_response(200)
-                self.send_header('Content-Length', content_length)
-
+            self.send_response(200)
+            self.send_header('Content-Length', content_length)
             self.send_header('Content-Type', content_type)
             self.end_headers()
 
             # Finally, we can send our file.
             with open(full_path, 'rb') as file:
-                file.seek(content_start, 0)
                 shutil.copyfileobj(file, self.wfile)
 
             return
