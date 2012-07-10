@@ -133,13 +133,16 @@ var ApplicationView = Backbone.View.extend({
 
         // Play/Pause
         audioplayer.on('change:playing', function() {
+            var favicon = $('#favicon');
             var vinyl = $('.vinyl');
 
             if (this.get('playing')) {
                 if (!vinyl.hasClass('visible')) {
-                  vinyl.addClass('visible');
+                    favicon.attr('href', '/static/img/favicon-playing.png');
+                    vinyl.addClass('visible');
                 }
             } else {
+                favicon.attr('href', '/static/img/favicon-paused.png');
                 vinyl.removeClass('visible');
             }
         }, audioplayer);
