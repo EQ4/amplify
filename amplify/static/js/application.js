@@ -127,7 +127,7 @@ var ApplicationView = Backbone.View.extend({
 
             $('h1').text(title);
             $('h2').text(artist);
-            $('head title').text(artist + ' - ' + title);
+            $('head title').text('0:00 | ' + artist + ' - ' + title);
 
         }, audioplayer);
 
