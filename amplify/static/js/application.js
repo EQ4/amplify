@@ -45,6 +45,22 @@ var Playlist = Backbone.Collection.extend({
     },
 
     getPreviousTrack: function() {
+        var result = false;
+
+        this.position -= 1;
+
+        if (this.position >= 0) {
+            return this.at(this.position);
+        } else {
+            this.position = 0;
+
+            if (this.get('repeat')) {
+                this.position = this.models.length - 1;
+                result = this.at(this.position);
+            }
+        }
+
+        return result;
     },
 });
 
@@ -110,6 +126,22 @@ var AudioPlayer = Backbone.Model.extend({
             this.set({current: playlist.first()});
             this.pause();
         }
+    },
+
+    previous: function() {
+        var audio = this.get('audio');
+        var playlist = this.get('playlist');
+        var track = playlist.getPreviousTrack();
+
+        if (track) {
+            this.set({current: track});
+            this.play();
+        } else {
+            // No previous track, trigger the change event to reload the
+            // first track in the playlist.
+            this.trigger('change:current');
+            this.pause();
+        }
     }
 });
 
@@ -171,12 +203,22 @@ var ApplicationView = Backbone.View.extend({
             $('head title').text(time + ' | ' + track.get('artist') + ' - ' + track.get('title'));
         });
 
-        $('.album').click(function() {
+        $('.cover').click(function() {
             if (audioplayer.isPaused()) {
                 audioplayer.play();
             } else {
                 audioplayer.pause();
             }
+        });
+
+        $('#previous').click(function(e) {
+            e.preventDefault();
+            audioplayer.previous();
+        });
+
+        $('#next').click(function(e) {
+            e.preventDefault();
+            audioplayer.next();
         });
     }
 });

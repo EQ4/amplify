@@ -49,7 +49,8 @@ h2 {
     border-radius: 5px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     height: 302px;
-    width: 302px; }
+    width: 302px;
+    z-index: 1; }
     .album .cover:hover {
       -moz-transition: box-shadow 0.2s linear;
       -o-transition: box-shadow 0.2s linear;
@@ -75,3 +76,39 @@ h2 {
   transform: rotate(0deg);
   -webkit-transition: margin-top 0.5s, -webkit-transform 0.5s;
   margin-top: -50px; }
+
+#controls {
+  height: 75px;
+  position: relative;
+  margin-top: -37.5px;
+  top: 50%; }
+
+#previous, #next {
+  -moz-transition: opacity 0.25s linear;
+  -o-transition: opacity 0.25s linear;
+  -webkit-transition: opacity 0.25s linear;
+  transition: opacity 0.25s linear;
+  display: block;
+  height: 75px;
+  float: left;
+  opacity: 0.25;
+  position: absolute;
+  text-indent: -9999px;
+  z-index: 0;
+  width: 75px; }
+  #previous:hover, #next:hover {
+    -moz-transition: opacity 0.25s linear;
+    -o-transition: opacity 0.25s linear;
+    -webkit-transition: opacity 0.25s linear;
+    transition: opacity 0.25s linear;
+    opacity: 1; }
+
+#previous {
+  background: transparent url("../img/backward.png") no-repeat;
+  left: 0;
+  margin-left: -105px; }
+
+#next {
+  background: transparent url("../img/forward.png") no-repeat;
+  right: 0;
+  margin-right: -105px; }
