@@ -1,11 +1,17 @@
 Amplify
 =======
 
-Just point amplify to an album or a track of your choice, and give your
+Point amplify to an album or a track of your choice, and give your
 friends a chance to listen to your music through a web browser.
 
 Currently it only works with Webkit-based browsers, as they're the only ones
 that can decode mp3s.
+
+Amplify is written for Python 3. A Python 2 port is being considered.
+
+## Screenshot
+
+![](https://raw.github.com/DrMegahertz/amplify/master/screenshot.png)
 
 ## Installation
 
