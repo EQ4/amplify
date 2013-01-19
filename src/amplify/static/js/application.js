@@ -26,41 +26,43 @@ var Playlist = Backbone.Collection.extend({
     model: Song,
     url: '/songs',
 
-    getNextTrack: function() {
+    step: function(delta) {
         var result = false;
 
-        this.position += 1;
+        this.position += delta;
 
-        if (this.position < this.models.length) {
-            return this.at(this.position);
-        } else {
+        if (this.position < 0) {
             this.position = 0;
-
-            if (this.get('repeat')) {
-                result = this.at(this.position);
-            }
+        } else if (this.position > this.models.length - 1) {
+            this.position = this.models.length - 1;
+        } else {
+            // We're within range
+            result = this.at(this.position);
         }
 
         return result;
     },
 
-    getPreviousTrack: function() {
-        var result = false;
+    getNextTrack: function() {
+        var track = this.step(1);
 
-        this.position -= 1;
-
-        if (this.position >= 0) {
-            return this.at(this.position);
-        } else {
+        if (!track && this.get('repeat')) {
             this.position = 0;
-
-            if (this.get('repeat')) {
-                this.position = this.models.length - 1;
-                result = this.at(this.position);
-            }
+            track = this.at(this.position);
         }
 
-        return result;
+        return track;
+    },
+
+    getPreviousTrack: function() {
+        var track = this.step(-1);
+
+        if (!track && this.get('repeat')) {
+            this.position = this.models.length;
+            track = this.at(this.position);
+        }
+
+        return track;
     },
 });
 
@@ -123,6 +125,7 @@ var AudioPlayer = Backbone.Model.extend({
             this.set({current: track});
             this.play();
         } else {
+            playlist.position = 0;
             this.set({current: playlist.first()});
             this.pause();
         }

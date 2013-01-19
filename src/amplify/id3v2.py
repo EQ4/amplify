@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 import collections
-import functools
 import io
 import re
 import struct
@@ -37,8 +37,8 @@ class TextFrame:
     # according to the ID3v2.4.0 specification.
     encoding_schemes = {
         0x00: ('iso-8859-1', b'\x00'),
-        0x01: ('utf-16',     b'\x00\x00'), # With BOM
-        0x02: ('utf-16',     b'\x00\x00'), # Without BOM
+        0x01: ('utf-16',     b'\x00\x00'),  # With BOM
+        0x02: ('utf-16',     b'\x00\x00'),  # Without BOM
         0x03: ('utf-8',      b'\x00')
     }
 
@@ -72,8 +72,8 @@ class PictureFrame:
     # TODO: Inherit from a common ancestor of TextFrame and PictureFrame.
     encoding_schemes = {
         0x00: ('iso-8859-1', b'\x00'),
-        0x01: ('utf-16',     b'\x00\x00'), # With BOM
-        0x02: ('utf-16',     b'\x00\x00'), # Without BOM
+        0x01: ('utf-16',     b'\x00\x00'),  # With BOM
+        0x02: ('utf-16',     b'\x00\x00'),  # Without BOM
         0x03: ('utf-8',      b'\x00')
     }
 

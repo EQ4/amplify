@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 import functools
-import os
+# import os
 
 from amplify.requesthandler import RequestHandler, ThreadingHTTPServer
 
@@ -33,5 +34,3 @@ class Application:
 
         httpd = self.httpserver((bind, port), self.requesthandler)
         httpd.serve_forever()
-
-

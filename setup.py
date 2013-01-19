@@ -1,23 +1,31 @@
-#!/usr/bin/env python3
-from setuptools import setup
+#!/usr/bin/env python
+from distutils.core import setup
 
-entry_points = {
-    'console_scripts': [
-        'amplify = amplify.main:main'
-    ]
-}
 
 setup(
     name='Amplify',
-    version='0.0.1',
+    version='0.1.0',
     url='https://github.com/DrMegahertz/amplify',
-    license = 'BSD License',
-    author = 'Marcus Fredriksson',
-    author_email = 'drmegahertz@gmail.com',
-    description = 'Share music with your friends',
-    packages = ['amplify'],
-    entry_points = entry_points,
-    classifiers = [
+    license='BSD License',
+    author='Marcus Fredriksson',
+    author_email='drmegahertz@gmail.com',
+    description='Share music with your friends',
+    packages=['amplify'],
+    package_data={
+        'amplify': [
+            'static/css/*.css',
+            'static/img/*.png',
+            'static/js/*.js',
+            'static/js/foundation/*.js',
+            'static/fonts/*.ttf',
+            'templates/*.html',
+        ],
+    },
+    package_dir={
+        '': 'src'
+    },
+    scripts=['amplify'],
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
