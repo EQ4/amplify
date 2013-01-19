@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import argparse
 import json
 import os
 import re
@@ -15,6 +14,39 @@ from amplify.utils import natural_sort
 
 app = Application(__name__)
 
+def parse_args():
+    try:
+        import argparse
+
+        parser = argparse.ArgumentParser(description='Share music with your friends.')
+
+        parser.add_argument('-b', '--bind', default='localhost')
+        parser.add_argument('-p', '--port', default=8000, type=int)
+        parser.add_argument('-c', '--cover', help='Image to use as album cover')
+        parser.add_argument('path', help='Path to music file or album directory')
+
+        options = parser.parse_args()
+
+    except ImportError:
+        import optparse
+
+        parser = optparse.OptionParser(
+            'Usage: %prog [options] <path>',
+            description='Share music with your friends.'
+        )
+
+        parser.add_option('-b', '--bind', default='localhost')
+        parser.add_option('-p', '--port', default=8000, type=int)
+        parser.add_option('-c', '--cover', help='Image to use as album cover')
+
+        options, args = parser.parse_args()
+
+        if not args:
+            parser.error('error: the following arguments are required: path')
+
+        options.path = args[0]
+
+    return options
 
 @app.route('/')
 def index(request):
@@ -92,15 +124,7 @@ def cover(request):
     return HttpResponse(cover_data, content_type='image/jpeg')
 
 def main():
-    parser = argparse.ArgumentParser(description='Share music with your friends.')
-
-    parser.add_argument('-b', '--bind', default='localhost')
-    parser.add_argument('-p', '--port', default=8000, type=int)
-    parser.add_argument('-c', '--cover', help='Image to use as album cover')
-    parser.add_argument('path', help='Path to music file or album directory')
-
-    options = parser.parse_args()
-
+    options = parse_args()
     cover = None
     songs = []
 
