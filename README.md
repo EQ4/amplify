@@ -74,8 +74,7 @@ Amplify currently takes two types of inputs; either whole directories or single
 mp3 tracks.
 
 It supports the ID3v2.3 and ID3v2.4 tagging formats, with either embedded or
-separate album art. Please note that at the time of writing, amplify will crash
-if you supply it with an album or track that is missing album art.
+separate album art.
 
 To serve a directory of tracks, just supply the path of the album as a single
 argument to amplify:

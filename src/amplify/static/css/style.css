@@ -48,8 +48,8 @@ h2 {
     transition: box-shadow 0.2s linear;
     border-radius: 5px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-    height: 302px;
-    width: 302px;
+    height: 300px;
+    width: 300px;
     z-index: 1; }
     .album .cover:hover {
       -moz-transition: box-shadow 0.2s linear;
@@ -57,10 +57,14 @@ h2 {
       -webkit-transition: box-shadow 0.2s linear;
       transition: box-shadow 0.2s linear;
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.5); }
-  .album .cover, .album .vinyl {
+  .album .cover {
     left: 0;
     position: absolute;
     top: 0; }
+  .album .vinyl {
+    left: 1px;
+    position: absolute;
+    top: 1px; }
 
 .vinyl {
   -moz-transform: rotate(-90deg);

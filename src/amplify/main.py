@@ -174,10 +174,13 @@ def main():
         print("Couldn't read the given input.", file=sys.stderr)
         sys.exit(1)
 
-    if cover:
-        app.cover = cover
-    elif options.cover:
+    if options.cover:
         app.cover = open(options.cover, 'rb')
+    elif cover:
+        app.cover = cover
+    else:
+        root = os.path.dirname(os.path.abspath(__file__))
+        app.cover = open(os.path.join(root, 'static/img/default-cover.png'), 'rb')
 
     try:
         print('Listening on http://{0}:{1}/ ...'.format(

@@ -57,18 +57,23 @@ h2
     @include transition(box-shadow, 0.2s, linear)
     border-radius: 5px
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3)
-    height: 302px
-    width: 302px
+    height: 300px
+    width: 300px
     z-index: 1
 
     &:hover
       @include transition(box-shadow, 0.2s, linear)
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.5)
 
-  .cover, .vinyl
+  .cover
     left: 0
     position: absolute
     top: 0
+
+  .vinyl
+    left: 1px
+    position: absolute
+    top: 1px
 
 .vinyl
   @include transform(rotate(-90deg))

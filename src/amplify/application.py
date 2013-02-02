@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import functools
-# import os
 
 from amplify.requesthandler import RequestHandler, ThreadingHTTPServer
 
@@ -11,7 +10,6 @@ class Application:
 
     def __init__(self, import_name):
         self.url_map = {}
-        # self.root_path = os.path.dirname(os.path.abspath(__name__))
 
     def route(self, url):
         def decorator(func):
